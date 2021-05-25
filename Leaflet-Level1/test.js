@@ -7,17 +7,21 @@ d3.json(queryUrl).then(function (data) {
 });
 
 function createFeatures(earthquakeData) {
-
+    console.log(earthquakeData)
   // Define a function that we want to run once for each feature in the features array.
   // Give each feature a popup that describes the place and time of the earthquake.
   function onEachFeature(feature, layer) {
     layer.bindPopup("<h3>" + feature.properties.place +
-      "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+      "</h3><hr><p>" + new Date(feature.properties.time) + "</p><p>" + feature.properties.mag + "</p>");
   }
-
+  //var myStyle = {
+      //"color": feature.geometry.coordiantes[3],
+      //"weight": feature.properties.mag
+  
   // Create a GeoJSON layer that contains the features array on the earthquakeData object.
   // Run the onEachFeature function once for each piece of data in the array.
   var earthquakes = L.geoJSON(earthquakeData, {
+    //style: myStyle,  
     onEachFeature: onEachFeature
   });
 
@@ -26,7 +30,7 @@ function createFeatures(earthquakeData) {
 }
 
 function createMap(earthquakes) {
-
+    
   // Create the base layers.
   var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
