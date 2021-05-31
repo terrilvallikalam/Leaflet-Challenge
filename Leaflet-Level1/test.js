@@ -9,11 +9,21 @@ d3.json(queryUrl).then(function (data) {
 function createFeatures(earthquakeData) {
     console.log(earthquakeData)
   // Define a function that we want to run once for each feature in the features array.
+  function styleInfo(feature) { 
+    return {opacity: 1, 
+      fillOpacity: 1, 
+      fillColor: getColor(feature.geometry.coordinates2), 
+      color: "#000000", 
+      radius: getRadius(feature.properties.mag), 
+      stroke: true, 
+      weight: 0.5}; 
+  }
   // Give each feature a popup that describes the place and time of the earthquake.
   function onEachFeature(feature, layer) {
     layer.bindPopup("<h3>" + feature.properties.place +
       "</h3><hr><p>" + new Date(feature.properties.time) + "</p><p>" + feature.properties.mag + "</p>");
   }
+  
   //var myStyle = {
       //"color": feature.geometry.coordiantes[3],
       //"weight": feature.properties.mag
@@ -22,7 +32,8 @@ function createFeatures(earthquakeData) {
   // Run the onEachFeature function once for each piece of data in the array.
   var earthquakes = L.geoJSON(earthquakeData, {
     //style: myStyle,  
-    onEachFeature: onEachFeature
+    onEachFeature: onEachFeature,
+    styleInfo: styleInfo
   });
 
   // Send our earthquakes layer to the createMap function/
